@@ -5,3 +5,4 @@ selenium
 pandas
 numpy
 python-dotenv 
+gunicorn
