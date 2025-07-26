@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.venv/
+env/
+venv/
+ENV/
+pip-log.txt
+poetry.lock
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.bak
+
+# Logs & temp
+*.log
+*.tmp
+*.cache
+.cache/
+
+# Compiled frontend (if using JS build tools)
+node_modules/
+public/build/
+dist/
+build/
+
+# Local server data
+*.sqlite3
+*.db
+
+# Jupyter notebooks (if not used)
+.ipynb_checkpoints/
+
+# Tests / Coverage
+htmlcov/
+.tox/
+.coverage
+coverage.xml
+.pytest_cache/
+nosetests.xml
+test-results.xml

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Booking Demand Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(0.5) sepia(1) saturate(5) hue-rotate(175deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Header & Hero Section -->
+    <header class="bg-gradient-to-br from-sky-500 to-indigo-600 text-white">
+        <div class="container mx-auto px-6 py-16 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">Airline Booking Demand Dashboard</h1>
+            <p class="mt-4 text-lg md:text-xl text-sky-100 max-w-3xl mx-auto">
+                Analyze real-time flight data trends and booking patterns for better business decisions
+            </p>
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
+                    <span class="text-sm">📊 Real-time Analytics</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
+                    <span class="text-sm">📈 Trend Analysis</span>
+                </div>
+                <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2">
+                    <span class="text-sm">🎯 Business Intelligence</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-16">
+
+        <!-- Search Section -->
+        <section id="search-section" class="my-12">
+            <div class="max-w-6xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold text-center mb-8 text-slate-800">Flight Data Analysis</h2>
+                
+                <!-- Search Form -->
+                <!-- Replace the date input fields section with this -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end mb-6">
+                    <!-- Origin Airport -->
+                    <div class="space-y-2">
+                        <label for="origin" class="block font-medium text-slate-700">Origin Airport</label>
+                        <select id="origin" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition duration-200 bg-white">
+                        </select>
+                    </div>
+                
+                    <!-- Destination Airport -->
+                    <div class="space-y-2">
+                        <label for="destination" class="block font-medium text-slate-700">Destination Airport</label>
+                        <select id="destination" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition duration-200 bg-white">
+                        </select>
+                    </div>
+                
+                    <!-- Today's Date (Read-only) -->
+                    <div class="space-y-2">
+                        <label for="today-date" class="block font-medium text-slate-700">Today's Date</label>
+                        <input type="text" id="today-date" class="w-full px-4 py-3 border border-slate-300 rounded-lg bg-slate-50 text-slate-500" readonly>
+                    </div>
+                </div>
+                <!-- Search Button -->
+                <div class="text-center">
+                    <button id="search-btn" class="bg-indigo-600 text-white font-semibold py-3 px-12 rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300">
+                        Analyze Flight Data
+                    </button>
+                </div>
+
+                <!-- Date restriction notice -->
+                <!-- Replace the date restriction notice with this -->
+                <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p class="text-sm text-blue-800 text-center">
+                        <strong>📅 Current Date Only:</strong> AviationStack free tier provides flight data for the current date only.
+                        Premium API access would be required for historical data.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section id="charts" class="my-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Top Routes Chart -->
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center mb-6">
+                        <div class="flex items-center justify-center h-12 w-12 bg-sky-100 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800">Top 5 Popular Routes</h3>
+                    </div>
+                    <div id="bar-chart" class="h-80"></div>
+                </div>
+
+                <!-- Price Trends Chart -->
+                <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center mb-6">
+                        <div class="flex items-center justify-center h-12 w-12 bg-indigo-100 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800">Average Price Trends</h3>
+                    </div>
+                    <div id="line-chart" class="h-80"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flight Data Table -->
+        <section id="data-table-section" class="my-12">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-8 border-b border-slate-200">
+                    <div class="flex items-center">
+                        <div class="flex items-center justify-center h-12 w-12 bg-emerald-100 rounded-full mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-800">Flight Data</h3>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Route</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Date & Time</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Airline</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Flight Number</th>
+                                <th class="px-6 py-4 text-left text-sm font-semibold text-slate-700">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table" class="divide-y divide-slate-200">
+                            <!-- Data rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400">
+        <div class="container mx-auto py-8 px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p>&copy; 2024 Airline Booking Demand Dashboard. Built with ❤️ using AviationStack API.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition-colors duration-300">Documentation</a>
+                    <a href="#" class="hover:text-white transition-colors duration-300">API</a>
+                    <a href="#" class="hover:text-white transition-colors duration-300">Support</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/charts.js"></script>
+    <script>
+      // Dynamic city dropdowns with IATA codes
+      const cities = [
+        { name: "Sydney", code: "SYD" },
+        { name: "Melbourne", code: "MEL" },
+        { name: "Brisbane", code: "BNE" },
+        { name: "Perth", code: "PER" },
+        { name: "Adelaide", code: "ADL" },
+        { name: "Gold Coast", code: "OOL" },
+        { name: "Canberra", code: "CBR" },
+        { name: "Hobart", code: "HBA" },
+        { name: "Darwin", code: "DRW" },
+        { name: "Cairns", code: "CNS" },
+        { name: "Newcastle", code: "NTL" },
+        { name: "Townsville", code: "TSV" },
+        { name: "Wollongong", code: "WOL" },
+        { name: "Geelong", code: "GEX" },
+        { name: "Ballarat", code: "BLT" }
+      ];
+      const originSelect = document.getElementById('origin');
+      const destinationSelect = document.getElementById('destination');
+      originSelect.innerHTML = cities.map(city => `<option value="${city.code}">${city.name} (${city.code})</option>`).join('');
+      destinationSelect.innerHTML = `<option value="">Show All Flights</option>` + cities.map(city => `<option value="${city.code}">${city.name} (${city.code})</option>`).join('');
+      // Set default values
+      originSelect.value = 'SYD';
+      destinationSelect.value = '';
+      
+      // Set today's date in the read-only field
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString('en-US', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+      });
+      document.getElementById('today-date').value = formattedDate;
+    </script>
+
+</body>
+</html>
